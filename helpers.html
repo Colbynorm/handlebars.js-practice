@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="handlebars.js"></script>
+    <title>Helpers</title>
+</head>
+<body>
+    <!-- Should print 'hello' in all caps -->
+    <script id="template" type= "template/handlebars">
+        {{caps "hello"}}
+    </script>
+    <script>
+        var src = document.getElementById("template").innerHTML;
+        var template = Handlebars.compile(src);
+
+        Handlebars.registerHelper("caps", function(text) {
+            return text.toUpperCase();
+        });
+
+        var output = template;
+        document.body.innerHTML += output;
+    </script>
+</body>
+</html>
