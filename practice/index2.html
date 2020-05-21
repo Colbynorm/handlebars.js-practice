@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Handlebars Practice 2</title>
+    <script src="../handlebars.js"></script>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div id="quoteData"></div>
+
+    <script id="quote-template" type="text/x-handlebars-template">
+      <h3>
+        Favorite {{name}} Quotes
+      </h3>
+      <ol>
+        {{#each quotes}}
+          <li>
+            {{quote}}
+          </li>
+        {{/each}}
+      </ol>
+
+      <!-- triple curly brackets are used so that the '<p></p>' doesn't show up in the web page -->
+      {{{colbyBio}}}
+      <br />
+      <br />
+
+      {{makeLink
+        "Colby Portfolio"
+        "https://github.com/Colbynorm/react-portfolio"
+      }}<br />
+      <br />
+      <!-- the make "make my text" statement will change with the "color= " is changed -->
+      {{changeColor "Make my Text a different color" color="red"}}<br />
+      <br />
+
+      {{sayHello}}
+    </script>
+
+    <script type="text/javascript">
+      var quoteInfo = document.getElementById("quote-template").innerHTML;
+
+      var template = Handlebars.compile(quoteInfo);
+
+      //add url for portfolio
+      Handlebars.registerHelper("makeLink", function (text, url) {
+        text = Handlebars.Utils.escapeExpression(text);
+        url = Handlebars.Utils.escapeExpression(url);
+
+        var theLink = '<a href="' + url + '">' + text + "</a>";
+
+        return new Handlebars.SafeString(theLink);
+      });
+
+      Handlebars.registerHelper("changeColor", function (text, options) {
+        text = Handlebars.Utils.escapeExpression(text);
+
+        // will change the text from red, green and blue
+        if (options.hash.color === "red") {
+          return new Handlebars.SafeString(
+            "<span class='redText'>" + text + "</span>"
+          );
+        } else if (options.hash.color === "blue") {
+          return new Handlebars.SafeString(
+            "<span class='blueText'>" + text + "</span>"
+          );
+        } else {
+          return new Handlebars.SafeString(
+            "<span class='greenText'>" + text + "</span>"
+          );
+        }
+      });
+
+      //Will change between Hello Hola and Bonjour
+      Handlebars.registerHelper("sayHello", function (options) {
+        switch (options.data.lang) {
+            case "spanish":
+                return "Hola";
+                break;
+            case "french":
+                return "Bonjour";
+                break;
+            default: 
+                return "Hello";
+        }
+      });
+
+      var quoteData = template(
+        {
+          name: "Colby",
+          quotes: [
+            { quote: "I Love Coding" },
+            { quote: "Coding Is So Fun" },
+            { quote: "I Love Learning New Things" },
+          ],
+          colbyBio:
+            "<p>I am graduated from a coding bootcamp from Southern Methodist University in Dallas, Tx. I am just trying this handlebars.js practice to get more practice!</p>",
+        },
+        {
+          data: {
+              //change this between default, spanish and french.
+            lang: "spanish",
+          },
+        }
+      );
+
+      document.getElementById("quoteData").innerHTML += quoteData;
+    </script>
+  </body>
+</html>

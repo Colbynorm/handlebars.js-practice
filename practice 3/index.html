@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../handlebars.js"></script>
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="contentDiv"></div>
+
+    <script id="the-template" type="text/x-handlebars-template">
+           <div class="King">
+               <h3>{{title}}</h3>
+               {{#with data}}
+                <div class="author">{{{author}}}</div>
+               {{/with}}
+           </div>
+    </script>
+
+    <script type="text/javascript">
+        var templateInfo = document.getElementById("the-template").innerHTML;
+
+        var template = Handlebars.compile(templateInfo);
+        Handlebars.registerHelper('with', function(context, options){
+            return options.fn(context);
+        });
+
+        var templateData = template({
+            title: "The Shining",
+            data:{
+                author: "Stephen King"
+            }
+        });
+
+        document.getElementById('contentDiv').innerHTML += templateData;
+    </script>
+</body>
+</html>

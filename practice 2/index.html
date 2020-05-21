@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../handlebars.js"></script>
+    <link rel="stylesheet" href="style.css"
+</head>
+<body>
+
+    <div id="contentDiv"></div>
+    
+    <script id="the-template" type="text/x-handlebars-template">
+        {{#makeRadio "size"}}
+            small
+            medium
+            large
+        {{/makeRadio}} <br /><br />
+
+        <!-- Change the numbers inside to change the response on the HTML page -->
+        {{#areEqual 2 1}}
+            Numbers are equal
+        {{else}}
+            Numbers are not equal
+        {{/areEqual}} <br /><br />
+
+        <!-- Change "isActive" to something else and display the 'else statement' -->
+        {{#if "isActive"}}
+            <img class="profilePic"src="profilePic.jpg" alt="Active">
+        {{else}}
+            <p>No Image</p>
+        {{/if}}
+    </script>
+
+    <script type="text/javascript">
+        var templateInfo = document.getElementById("the-template").innerHTML;
+        var template = Handlebars.compile(templateInfo);
+        Handlebars.registerHelper("makeRadio", function(name, options) {
+            var radioList = options.fn();
+
+            radioList = radioList.trim().split("\n");
+
+            var output ="";
+
+            for(var val in radioList) {
+                var item = radioList[val].trim();
+                output += '<input type ="radio" name="' + name + '"value="' + item + '">' + item + '<br />';
+            }
+            return output;
+        });
+
+        //will change the response according to the numbers put in curly brackets
+        Handlebars.registerHelper("areEqual", function(num1, num2, options) {
+            if(num1 === num2){
+                return options.fn(this);
+            }else {
+                return options.inverse(this);
+            }
+        });
+
+        Handlebars.registerHelper("if", function(data, options) {
+            if(data === "isActive") {
+                return options.fn(this);
+            }else {
+                return options.inverse(this);
+            }
+        });
+
+        var templateData = template({});
+
+        document.getElementById("contentDiv").innerHTML += templateData;
+    </script>
+</body>
+</html>

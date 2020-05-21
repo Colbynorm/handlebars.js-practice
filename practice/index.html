@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handlebars Practice</title>
+    <script src="handlebars.js"></script>
+</head>
+<body>
+    
+<div id="colbyData"></div>
+
+<script>
+    var myInfo = "<p>My name is {{name}} and I live at {{street}} in {{city}}, {{state}}</p>"
+
+    var template = Handlebars.compile(myInfo);
+
+    var data = template ({name: "Colby", street: "123 Street", city: "Dallas", state: "TX"});
+
+    document.getElementById("colbyData").innerHTML += data;
+</script>
+
+</body>
+</html>
