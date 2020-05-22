@@ -3,10 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <script src="../handlebars.js"></script>
     <title>Document</title>
 </head>
 <body>
-    
+    <div id="contentDiv"></div>
+
+    <script id="the-template">
+        {{> myName }}
+
+        <div class="post">
+        {{> ask askQuestion tagName="h2"}}
+
+        <h2>Suggestions</h2>
+
+        {{ #each comments}}
+            {{> askQuestion tagName="h3" }}
+        {{/each}}
+        </div>
+    </script>
+
+    <script type="text/javascript">
+        var templateInfo = document.getElementById("the-template").innerHTML;
+
+        var template = Handlebars.compile(templateInfo);
+        
+        Handlebars.registerPartial("myName", '{{name}}');
+        Handlebars.registerPartial("askQuestion", '<{{tagName}}>{{author}}</tagName>' + '<div class="comment">{{comment}}</div>');
+
+        var templateData = tempalte({
+            name: "Misery",
+            author: "Stephen King",
+            comment: "This Book Is Amazing!",
+            comments: [
+                {
+                author: "Colby",
+                comment: "I recommend this book"
+                }
+            ]
+        });
+        document.getElementById('contentDiv').innerHTML += templateData;
+    </script>
 </body>
 </html>
